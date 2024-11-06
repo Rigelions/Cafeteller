@@ -16,11 +16,11 @@ import { Filter } from '@/components/Search/types'
 import { getCafeService } from '@/components/Search/services'
 import useDebounce from '@/hooks/useDebounce'
 import useFloatingSpinner from '@/hooks/useFloatingSpinner'
-import { useAtom } from 'jotai/index'
-import { showFooterAtom } from '@/atom/navbar'
-import useViewport from '@/hooks/useViewport'
-import { breakpoints } from '@/utils/breakpoints'
 
+const ControlFooter = dynamic(
+  () => import('./components/ControlFooter').then((module) => module),
+  { ssr: false }
+)
 const Card = dynamic(
   () => import('core_cafeteller/components').then((module) => module.Card),
   { ssr: false }
@@ -101,8 +101,6 @@ const SearchReviewCard = styled.div`
 `
 
 export default function Search() {
-  const { width } = useViewport()
-  const [, showFooter] = useAtom(showFooterAtom)
   const [filteredCafe, setFilteredCafe] = useState<Cafe[]>([])
   const mapElRef = useRef<HTMLElement | null>(null)
 
@@ -137,20 +135,9 @@ export default function Search() {
     getCafeDebounced()
   }, [filter])
 
-  useEffect(() => {
-    console.log({
-      width,
-      breakpointsLG: breakpoints.lg
-    })
-    if (width < breakpoints.lg) {
-      showFooter(false)
-    } else {
-      showFooter(true)
-    }
-  }, [width])
-
   return (
     <>
+      <ControlFooter />
       <MarkerPopup map={mapRef} cafes={filteredCafe} />
 
       <Row justify='center' className='search-wrap'>

@@ -16,17 +16,27 @@ const MarkerPopup = forwardRef(({ map, cafes }: MarkerPopupProps, ref) => {
         return cafe.location.lat && cafe.location.lon
       })
       .map((cafe) => ({
+        id: cafe.id,
         position: {
           lat: cafe.location.lat,
           lng: cafe.location.lon
         },
-        title: cafe.name
+        title: cafe.name,
+        gmpClickable: true
       }))
   })
 
   useEffect(() => {
-    // set map fit bounds to all markers
+    // on click marker
+    console.log([...markers.current])
+    markers.current?.forEach((marker) => {
+      marker.addListener('click', () => {
+        console.log('click', marker.id)
+      })
+    })
+  }, [markers])
 
+  useEffect(() => {
     if (!map.current) return
 
     const bounds = new google.maps.LatLngBounds()
