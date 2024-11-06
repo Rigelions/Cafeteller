@@ -20,7 +20,6 @@ const useMarker = ({ map, options }: MarkerProps) => {
       const image = document.createElement('img')
       image.src = '/assets/Images/pin.png'
 
-      console.log({ map: { ...map } })
       marker.current = new AdvancedMarkerElement({
         ...options,
         content: image,

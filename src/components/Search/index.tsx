@@ -16,13 +16,13 @@ import {
   collection,
   getDocs,
   getFirestore,
-  limit,
   orderBy,
   query,
   QueryConstraint,
   where
 } from '@firebase/firestore'
 import isEmpty from 'lodash.isempty'
+import MarkerPopup from '@/components/Search/components/MarkerPopup'
 
 const Card = dynamic(
   () => import('core_cafeteller/components').then((module) => module.Card),
@@ -118,13 +118,15 @@ export default function Search() {
   const [filter, setFilter] = useState<Filter>({
     provinces: ['กรุงเทพมหานคร']
   })
+  const [options] = useState({
+    center: { lat: 13.736717, lng: 100.523186 },
+    zoom: 10,
+    mapId: 'map-search'
+  })
 
-  useMap({
+  const { mapRef } = useMap({
     element: mapElRef,
-    options: {
-      center: { lat: 13.736717, lng: 100.523186 },
-      zoom: 10
-    }
+    options
   })
 
   useEffect(() => {
@@ -183,8 +185,6 @@ export default function Search() {
         return { ...doc.data(), id: doc.id, review_id: doc.data().reviews.id }
       }) as Cafe[]
 
-      console.log({ data })
-
       setFilteredCafe(data)
 
       setLoading(false)
@@ -193,20 +193,10 @@ export default function Search() {
     getCafe().then()
   }, [filter])
 
-  // const popupRefs = useRef(
-  //   Object.keys(reviews).reduce((acc, id) => {
-  //     acc[id] = React.createRef()
-  //     return acc
-  //   }, {})
-  // )
-  //
-  // const filterReviews = (selectedTypes) => {
-  //   // Add filtering logic here (if needed)
-  //   setFilteredReviews([...Object.keys(reviews)]) // Display all reviews for now
-  // }
-
   return (
     <>
+      <MarkerPopup map={mapRef} cafes={filteredCafe} />
+
       <Row justify='center' className='search-wrap'>
         <Col xs={24} lg={22} xxl={18}>
           <Row>
