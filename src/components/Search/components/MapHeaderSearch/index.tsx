@@ -1,11 +1,11 @@
-import { Col, Row, Select } from 'antd'
+import { Col, Row } from 'antd'
 import React from 'react'
 import styled from 'styled-components'
 import NameAutocomplete from '@/components/Search/components/NameAutocomplete'
 import TagsSelect from '@/components/Search/components/TagsSelect'
 import ProvinceSelect from '@/components/Search/components/ProvinceSelect'
 import AmphoeSelect from '@/components/Search/components/AmphoeSelect'
-import { Filter } from '@/components/Search'
+import { Filter } from '@/components/Search/types'
 
 const MapHeader = styled.div`
   box-shadow: 0 2px 6px 0 rgb(0 0 0 / 20%);

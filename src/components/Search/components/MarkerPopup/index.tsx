@@ -30,7 +30,7 @@ const MarkerPopup = forwardRef(({ map, cafes }: MarkerPopupProps, ref) => {
     // on click marker
     console.log([...markers.current])
     markers.current?.forEach((marker) => {
-      marker.addListener('click', () => {
+      marker.addListener('gmp-click', () => {
         console.log('click', marker.id)
       })
     })

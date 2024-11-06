@@ -9,7 +9,7 @@ const ControlFooter = () => {
   const { width } = useViewport()
 
   useEffect(() => {
-    if (width < breakpoints.lg) {
+    if (width < breakpoints.md) {
       showFooter(false)
     } else {
       showFooter(true)
