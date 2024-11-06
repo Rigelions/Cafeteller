@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Col, Row, Select } from 'antd'
+import { Col, Row } from 'antd'
 import Link from 'next/link'
 import styled from 'styled-components'
 import dynamic from 'next/dynamic'
@@ -11,18 +11,15 @@ import {
 } from '@/components/Search/Search.style'
 import useMap from '@/hooks/map/useMap'
 import { Cafe } from '@/types'
-import useLoadingOverlay from '@/hooks/useLoadingOverlay'
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  orderBy,
-  query,
-  QueryConstraint,
-  where
-} from '@firebase/firestore'
-import isEmpty from 'lodash.isempty'
 import MarkerPopup from '@/components/Search/components/MarkerPopup'
+import { Filter } from '@/components/Search/types'
+import { getCafeService } from '@/components/Search/services'
+import useDebounce from '@/hooks/useDebounce'
+import useFloatingSpinner from '@/hooks/useFloatingSpinner'
+import { useAtom } from 'jotai/index'
+import { showFooterAtom } from '@/atom/navbar'
+import useViewport from '@/hooks/useViewport'
+import { breakpoints } from '@/utils/breakpoints'
 
 const Card = dynamic(
   () => import('core_cafeteller/components').then((module) => module.Card),
@@ -103,18 +100,13 @@ const SearchReviewCard = styled.div`
   width: 95%;
 `
 
-export interface Filter {
-  name?: string
-  tags?: string[]
-  provinces?: string[]
-  amphoes?: string[]
-}
-
 export default function Search() {
+  const { width } = useViewport()
+  const [, showFooter] = useAtom(showFooterAtom)
   const [filteredCafe, setFilteredCafe] = useState<Cafe[]>([])
   const mapElRef = useRef<HTMLElement | null>(null)
 
-  const setLoading = useLoadingOverlay()
+  const setLoading = useFloatingSpinner()
   const [filter, setFilter] = useState<Filter>({
     provinces: ['กรุงเทพมหานคร']
   })
@@ -129,69 +121,33 @@ export default function Search() {
     options
   })
 
+  const getCafe = async () => {
+    const data = await getCafeService(filter)
+
+    setFilteredCafe(data.data)
+
+    setLoading(false)
+  }
+  const [getCafeDebounced, cancel] = useDebounce(getCafe, 500)
+
   useEffect(() => {
-    const getCafe = async () => {
-      const testFilter: Filter = {
-        ...filter
-      }
-      ;['amphoes', 'provinces', 'tags'].forEach((key) => {
-        if (isEmpty(testFilter[key as keyof Filter] as string[])) {
-          delete testFilter[key as keyof Filter]
-        }
-      })
+    setLoading(true)
 
-      if (isEmpty(testFilter)) {
-        setFilteredCafe([])
-        return
-      }
-
-      setLoading(true)
-      const db = getFirestore()
-      const cafes = collection(db, 'cafes')
-      const queries: QueryConstraint[] = []
-
-      Object.keys(filter).forEach((key) => {
-        switch (key) {
-          case 'name':
-            const nameQuery = [
-              where('name_search', '>=', filter[key]?.toLowerCase()),
-              where('name_search', '<=', filter[key]?.toLowerCase() + '\uf8ff')
-            ]
-
-            queries.push(...nameQuery)
-            break
-          case 'tags':
-            if (filter[key]?.length === 0) break
-            queries.push(where('tags', 'array-contains-any', filter[key]))
-            break
-          case 'provinces':
-            if (filter[key]?.length === 0) break
-            queries.push(
-              where('administrative_area_level_1', 'in', filter[key])
-            )
-            break
-          case 'amphoes':
-            if (filter[key]?.length === 0) break
-            queries.push(where('sublocality_level_1', 'in', filter[key]))
-            break
-        }
-      })
-
-      queries.push(orderBy('updateDate', 'desc'))
-
-      const snapshot = await getDocs(query(cafes, ...queries))
-
-      const data = snapshot.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id, review_id: doc.data().reviews.id }
-      }) as Cafe[]
-
-      setFilteredCafe(data)
-
-      setLoading(false)
-    }
-
-    getCafe().then()
+    cancel()
+    getCafeDebounced()
   }, [filter])
+
+  useEffect(() => {
+    console.log({
+      width,
+      breakpointsLG: breakpoints.lg
+    })
+    if (width < breakpoints.lg) {
+      showFooter(false)
+    } else {
+      showFooter(true)
+    }
+  }, [width])
 
   return (
     <>
@@ -276,24 +232,4 @@ export default function Search() {
       </MapSearchMenuContainer>
     </>
   )
-}
-
-// Example props to simulate the removed server-side functionality
-Search.defaultProps = {
-  reviews: {
-    '1': {
-      cafe: {
-        name: 'Cafe 1',
-        sublocality_level_1: 'Area 1',
-        banner: { url: '/assets/Images/cafe1.png' }
-      }
-    },
-    '2': {
-      cafe: {
-        name: 'Cafe 2',
-        sublocality_level_1: 'Area 2',
-        banner: { url: '/assets/Images/cafe2.png' }
-      }
-    }
-  }
 }

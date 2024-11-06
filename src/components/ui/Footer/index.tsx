@@ -8,8 +8,14 @@ import {
   SocialBar
 } from './Footer.style'
 import { Facebook, Instagram, Twitter } from '@/icons'
+import { useAtom } from 'jotai/index'
+import { showFooterAtom } from '@/atom/navbar'
 
 const Footer: React.FC = () => {
+  const [shouldShowFooter] = useAtom(showFooterAtom)
+
+  if (!shouldShowFooter) return null
+
   return (
     <>
       <Row justify='center' id='footer'>

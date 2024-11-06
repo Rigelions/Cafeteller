@@ -12,9 +12,11 @@ import { HIDE_FOOTER_ROUTE, HIDE_NAVBAR_ROUTE } from '@/utils/hideNavbarRoute'
 import { useEffect } from 'react'
 import { getAnalytics, logEvent } from '@firebase/analytics'
 
-import { Provider } from 'jotai'
+import { Provider, useAtom } from 'jotai'
 import LoadingOverlay from '@/components/ui/LoadingOverlay'
 import RouteLoading from '@/components/ui/RouteLoading'
+import FloatingSpinner from '@/components/ui/FloatingSpinner'
+import { showFooterAtom } from '@/atom/navbar'
 
 initialFirebaseApp()
 
@@ -32,18 +34,20 @@ export default function App({ Component, pageProps }: AppProps) {
     })
   }, [])
 
-  const shouldHide = HIDE_NAVBAR_ROUTE.includes(router.pathname)
-  const shouldHideFooter = HIDE_FOOTER_ROUTE.includes(router.pathname)
+  const isRouteHiding = HIDE_NAVBAR_ROUTE.includes(router.pathname)
+  const isRouteHidingFooter = HIDE_FOOTER_ROUTE.includes(router.pathname)
   return (
     <Provider>
       <SWRProvider>
         <StyledComponentsRegistry>
-          {!shouldHide && <NavbarContainer />}
-          {shouldHide && <div id='navbar-portal' />}
+          {!isRouteHiding && <NavbarContainer />}
+          {isRouteHiding && <div id='navbar-portal' />}
           <RouteLoading />
           <LoadingOverlay />
+          <FloatingSpinner />
+
           <Component {...pageProps} />
-          {!shouldHideFooter && <Footer />}
+          {!isRouteHidingFooter && <Footer />}
         </StyledComponentsRegistry>
       </SWRProvider>
     </Provider>
