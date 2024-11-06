@@ -77,6 +77,8 @@ const ReviewsEditor = () => {
         {
           ...cafeData,
           name_search: cafeData.name.toLowerCase(),
+          createDate: serverTimestamp(),
+          updateDate: serverTimestamp(),
           reviews: reviewRef
         },
         { merge: true }

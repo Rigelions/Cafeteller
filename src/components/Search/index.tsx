@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Col, Row, Select } from 'antd'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -9,8 +9,20 @@ import {
   MapSearchMenuContainer,
   Pattern1
 } from '@/components/Search/Search.style'
-
-const { Option } = Select
+import useMap from '@/hooks/map/useMap'
+import { Cafe } from '@/types'
+import useLoadingOverlay from '@/hooks/useLoadingOverlay'
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  limit,
+  orderBy,
+  query,
+  QueryConstraint,
+  where
+} from '@firebase/firestore'
+import isEmpty from 'lodash.isempty'
 
 const Card = dynamic(
   () => import('core_cafeteller/components').then((module) => module.Card),
@@ -91,10 +103,96 @@ const SearchReviewCard = styled.div`
   width: 95%;
 `
 
-export default function Search({ reviews }: any) {
-  const [filteredReviews, setFilteredReviews] = useState([
-    ...Object.keys(reviews)
-  ])
+export interface Filter {
+  name?: string
+  tags?: string[]
+  provinces?: string[]
+  amphoes?: string[]
+}
+
+export default function Search() {
+  const [filteredCafe, setFilteredCafe] = useState<Cafe[]>([])
+  const mapElRef = useRef<HTMLElement | null>(null)
+
+  const setLoading = useLoadingOverlay()
+  const [filter, setFilter] = useState<Filter>({
+    provinces: ['กรุงเทพมหานคร']
+  })
+
+  useMap({
+    element: mapElRef,
+    options: {
+      center: { lat: 13.736717, lng: 100.523186 },
+      zoom: 10
+    }
+  })
+
+  useEffect(() => {
+    const getCafe = async () => {
+      const testFilter: Filter = {
+        ...filter
+      }
+      ;['amphoes', 'provinces', 'tags'].forEach((key) => {
+        if (isEmpty(testFilter[key as keyof Filter] as string[])) {
+          delete testFilter[key as keyof Filter]
+        }
+      })
+
+      if (isEmpty(testFilter)) {
+        setFilteredCafe([])
+        return
+      }
+
+      setLoading(true)
+      const db = getFirestore()
+      const cafes = collection(db, 'cafes')
+      const queries: QueryConstraint[] = []
+
+      Object.keys(filter).forEach((key) => {
+        switch (key) {
+          case 'name':
+            const nameQuery = [
+              where('name_search', '>=', filter[key]?.toLowerCase()),
+              where('name_search', '<=', filter[key]?.toLowerCase() + '\uf8ff')
+            ]
+
+            queries.push(...nameQuery)
+            break
+          case 'tags':
+            if (filter[key]?.length === 0) break
+            queries.push(where('tags', 'array-contains-any', filter[key]))
+            break
+          case 'provinces':
+            if (filter[key]?.length === 0) break
+            queries.push(
+              where('administrative_area_level_1', 'in', filter[key])
+            )
+            break
+          case 'amphoes':
+            if (filter[key]?.length === 0) break
+            queries.push(where('sublocality_level_1', 'in', filter[key]))
+            break
+        }
+      })
+
+      queries.push(orderBy('updateDate', 'desc'))
+
+      const snapshot = await getDocs(query(cafes, ...queries))
+
+      const data = snapshot.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id, review_id: doc.data().reviews.id }
+      }) as Cafe[]
+
+      console.log({ data })
+
+      setFilteredCafe(data)
+
+      setLoading(false)
+    }
+
+    getCafe().then()
+  }, [filter])
+
   // const popupRefs = useRef(
   //   Object.keys(reviews).reduce((acc, id) => {
   //     acc[id] = React.createRef()
@@ -114,26 +212,33 @@ export default function Search({ reviews }: any) {
           <Row>
             <Col xs={24} md={17} xxl={18}>
               <MapContainer>
-                <MapHeaderSearch className='hidden md:block' />
-                <Map id='map' />
+                <MapHeaderSearch
+                  className='hidden md:block'
+                  filter={filter}
+                  onFilterChange={setFilter}
+                />
+                <Map
+                  ref={mapElRef as React.RefObject<HTMLDivElement>}
+                  id='map'
+                />
               </MapContainer>
             </Col>
             <Col xs={24} md={{ span: 7 }} xxl={{ span: 6 }}>
               <SearchReview>
                 <h2>
-                  <span>{filteredReviews.length}</span> Reviews
+                  <span>{filteredCafe.length}</span> Reviews
                 </h2>
 
                 <Row style={{ overflowY: 'scroll', height: '87vh' }}>
-                  {filteredReviews.map((r) => (
-                    <Col key={r} xs={24}>
+                  {filteredCafe.map((c) => (
+                    <Col key={c.id} xs={24}>
                       <SearchReviewCard>
-                        <Link href={`/reviews/${r}`}>
+                        <Link href={`/reviews/${c.review_id}`}>
                           <Card
-                            description={reviews[r].cafe.sublocality_level_1}
-                            key={reviews[r].id}
-                            title={reviews[r].cafe.name}
-                            src={reviews[r].cafe.banner?.url}
+                            description={c.sublocality_level_1}
+                            key={c.id}
+                            title={c.name}
+                            src={c.banner?.url}
                             className='h-96 lg:h-[28rem]'
                           />
                         </Link>
@@ -151,28 +256,29 @@ export default function Search({ reviews }: any) {
         <Pattern1 img={'/assets/Images/pattern6.jpg'}>
           <MapSearchMenu>
             <h2>
-              <span>{filteredReviews.length}</span> Reviews
+              <span>{filteredCafe.length}</span> Reviews
             </h2>
 
-            <MapHeaderSearch className='block md:hidden shadow-none mb-2' />
+            <MapHeaderSearch
+              filter={filter}
+              onFilterChange={setFilter}
+              className='block md:hidden shadow-none mb-2'
+            />
             <Row gutter={[10, 12]}>
-              {Object.keys(reviews).map((r) => {
-                if (filteredReviews && filteredReviews.includes(r)) {
-                  return (
-                    <Col key={r + '-link'} xs={24}>
-                      <Link href={`/reviews/${r}`}>
-                        <Card
-                          description={reviews[r].cafe.sublocality_level_1}
-                          key={reviews[r].id}
-                          title={reviews[r].cafe.name}
-                          src={reviews[r].cafe.banner?.url}
-                          className='h-96 lg:h-[28rem]'
-                        />
-                      </Link>
-                    </Col>
-                  )
-                }
-                return null
+              {filteredCafe.map((c) => {
+                return (
+                  <Col key={c + '-link'} xs={24}>
+                    <Link href={`/reviews/${c.review_id}`}>
+                      <Card
+                        description={c.sublocality_level_1}
+                        key={c.id}
+                        title={c.name}
+                        src={c.banner?.url}
+                        className='h-96 lg:h-[28rem]'
+                      />
+                    </Link>
+                  </Col>
+                )
               })}
             </Row>
           </MapSearchMenu>
