@@ -1,6 +1,9 @@
 import React, { forwardRef, MutableRefObject, useEffect } from 'react'
 import { Cafe } from '@/types'
 import useMultipleMarker from '@/hooks/map/useMultipleMarker'
+import useInfoWindow from '@/hooks/map/useInfoWindow'
+import { createPortal } from 'react-dom'
+import Link from 'next/link'
 
 interface MarkerPopupProps {
   map: MutableRefObject<google.maps.Map | null>
@@ -8,6 +11,9 @@ interface MarkerPopupProps {
 }
 
 const MarkerPopup = forwardRef(({ map, cafes }: MarkerPopupProps, ref) => {
+  const [focusCafe, setFocusCafe] = React.useState<Cafe | null>(null)
+  const { content, openInfoWindow } = useInfoWindow({ map: map.current })
+
   const { markers } = useMultipleMarker({
     map,
     options: cafes
@@ -22,19 +28,12 @@ const MarkerPopup = forwardRef(({ map, cafes }: MarkerPopupProps, ref) => {
           lng: cafe.location.lon
         },
         title: cafe.name,
-        gmpClickable: true
+        onClick: (marker) => {
+          setFocusCafe(cafe)
+          if (marker) openInfoWindow(marker)
+        }
       }))
   })
-
-  useEffect(() => {
-    // on click marker
-    console.log([...markers.current])
-    markers.current?.forEach((marker) => {
-      marker.addListener('gmp-click', () => {
-        console.log('click', marker.id)
-      })
-    })
-  }, [markers])
 
   useEffect(() => {
     if (!map.current) return
@@ -52,7 +51,23 @@ const MarkerPopup = forwardRef(({ map, cafes }: MarkerPopupProps, ref) => {
     map.current?.fitBounds(bounds)
   }, [cafes])
 
-  return <></>
+  const popup = (
+    <div className='mt-3'>
+      <Link href={`reviews/${focusCafe?.review_id}`}>
+        <h1 className='text-2xl font-bold text-center text-primary georgia-font cursor-pointer'>
+          {focusCafe?.name}
+        </h1>
+      </Link>
+
+      <p className='w-full text-center text-lg text-primary'>
+        {focusCafe?.sublocality_level_1} •{' '}
+        {focusCafe?.administrative_area_level_1}
+      </p>
+    </div>
+  )
+
+  if (!content) return null
+  return createPortal(popup, content)
 })
 
 export default MarkerPopup

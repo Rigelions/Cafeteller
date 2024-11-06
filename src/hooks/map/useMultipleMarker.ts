@@ -3,7 +3,9 @@ import { loader } from '@/utils/gmap'
 
 interface MarkerProps {
   map: MutableRefObject<google.maps.Map | null>
-  options: google.maps.marker.AdvancedMarkerElementOptions[]
+  options: (google.maps.marker.AdvancedMarkerElementOptions & {
+    onClick?: (marker?: google.maps.marker.AdvancedMarkerElement) => void
+  })[]
 }
 
 const useMultipleMarker = ({ map, options }: MarkerProps) => {
@@ -21,7 +23,7 @@ const useMultipleMarker = ({ map, options }: MarkerProps) => {
       })
       markers.current = []
 
-      options.forEach((option) => {
+      options.forEach(({ onClick, ...option }) => {
         const image = document.createElement('img')
         image.src = '/assets/Images/pin.png'
 
@@ -29,6 +31,10 @@ const useMultipleMarker = ({ map, options }: MarkerProps) => {
           ...option,
           content: image,
           map: map.current
+        })
+
+        marker.addListener('click', () => {
+          onClick?.(marker)
         })
 
         markers.current.push(marker)

@@ -16,7 +16,6 @@ import { Provider, useAtom } from 'jotai'
 import LoadingOverlay from '@/components/ui/LoadingOverlay'
 import RouteLoading from '@/components/ui/RouteLoading'
 import FloatingSpinner from '@/components/ui/FloatingSpinner'
-import { showFooterAtom } from '@/atom/navbar'
 
 initialFirebaseApp()
 

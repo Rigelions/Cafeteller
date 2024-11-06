@@ -422,3 +422,7 @@ a:hover {
 .worksans-font {
     font-family: 'Worksans', 'Thaisans', cursive;
 }
+
+.map-search .gm-style-iw-chr {
+    display: none;
+}

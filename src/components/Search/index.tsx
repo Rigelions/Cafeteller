@@ -153,6 +153,7 @@ export default function Search() {
                 <Map
                   ref={mapElRef as React.RefObject<HTMLDivElement>}
                   id='map'
+                  className='map-search'
                 />
               </MapContainer>
             </Col>
