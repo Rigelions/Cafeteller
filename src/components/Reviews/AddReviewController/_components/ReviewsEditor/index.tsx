@@ -117,9 +117,9 @@ const ReviewsEditor = () => {
 
       // clear editor
       editor.blocks.clear()
-      // insert
-      console.log(review.review?.blocks)
-      editor.blocks.insertMany(review.review?.blocks || [])
+      editor.blocks.render({
+        blocks: review.review?.blocks || []
+      })
     }
   }, [review, editorRef.current])
 

@@ -14,7 +14,7 @@ const MarkerPopup = forwardRef(({ map, cafes }: MarkerPopupProps, ref) => {
   const [focusCafe, setFocusCafe] = React.useState<Cafe | null>(null)
   const { content, openInfoWindow } = useInfoWindow({ map: map.current })
 
-  const { markers } = useMultipleMarker({
+  useMultipleMarker({
     map,
     options: cafes
       .filter((cafe) => {
