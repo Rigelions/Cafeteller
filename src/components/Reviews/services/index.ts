@@ -48,8 +48,6 @@ export const getReviewByID = async (
       const reviewData = reviewSnap.data()
       result.review = reviewData as Review
 
-      console.log({ reviewData })
-
       if (result.review.version !== 'v2') {
         result.review.review.blocks = convertBlocksV1toV2(
           result.review.review.blocks

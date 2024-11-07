@@ -16,6 +16,12 @@ const useMap = ({ element, options }: MapProps) => {
 
       if (!element?.current) return
 
+      // check if position is correct LatLng object
+      if (!options.center?.lat || !options.center?.lng) {
+        console.error('Invalid position')
+        return
+      }
+
       mapRef.current = new Map(element.current, options)
 
       setLoading(false)

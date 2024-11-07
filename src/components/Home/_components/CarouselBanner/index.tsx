@@ -27,7 +27,7 @@ const CarouselBanner = () => {
       </Banner>
 
       {data?.map((item, i) => (
-        <Link key={item.id + '-banner'} href={`/reviews/${item.id}`}>
+        <Link key={item.id + '-banner'} href={`/reviews/${item.review_id}`}>
           <div style={{ overflow: 'hidden', cursor: 'pointer' }}>
             <div style={{ position: 'relative', width: 0, height: 0 }}>
               <h1
