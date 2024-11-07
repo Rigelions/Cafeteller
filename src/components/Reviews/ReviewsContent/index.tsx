@@ -21,7 +21,6 @@ import {
 const { Title } = Typography
 
 import dynamic from 'next/dynamic'
-import Mobile from '@/components/ui/Show/Mobile'
 import {
   TitleBox,
   TitlePattern

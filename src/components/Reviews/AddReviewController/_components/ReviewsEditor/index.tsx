@@ -25,6 +25,8 @@ import { useRouter } from 'next/router'
 import { ReviewsPayload } from '@/types/reviews'
 import useLoadingOverlay from '@/hooks/useLoadingOverlay'
 import { reviewAtom } from '@/components/Reviews/AddReviewController/atom/review'
+import ReviewHeader from '@/components/ui/ReviewHeader'
+import Show from '@/components/ui/Show'
 
 const ReviewsEditor = () => {
   const [cafe] = useAtom(cafeAtom)
@@ -126,6 +128,14 @@ const ReviewsEditor = () => {
   return (
     <>
       <Col className='pl-20 py-5' span={15}>
+        <Show when={!!cafe.name || !!cafe.sublocality_level_1}>
+          <ReviewHeader
+            cafeName={cafe.name || ''}
+            cafeArea={cafe.sublocality_level_1 || ''}
+            preview
+          />
+        </Show>
+
         <Editor
           saveRef={editorRef}
           uploadCallback={async (file: File) => {

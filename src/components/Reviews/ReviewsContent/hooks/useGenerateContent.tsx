@@ -1,9 +1,6 @@
 import React from 'react'
 import { Image, Typography } from 'antd'
-import {
-  TitleBox,
-  TitlePattern
-} from '@/components/Reviews/ReviewsContent/content.style'
+import ReviewHeader from '@/components/ui/ReviewHeader'
 
 const { Title } = Typography
 
@@ -131,18 +128,7 @@ const useGenerateContent = ({
 
     const fullCafeName = block.data.text || ''
     const [cafeName, cafeArea] = fullCafeName.split('—')
-    return [
-      <Title key={index} level={2} className='article-header'>
-        {cafeName}
-      </Title>,
-      <TitleBox key={index + 'l'}>
-        <TitlePattern key={0} img={'/assets/Images/pattern4.jpg'} />
-        <Title level={4} className='article-header'>
-          {cafeArea}
-        </Title>
-        <TitlePattern key={1} img={'/assets/Images/pattern4.jpg'} />
-      </TitleBox>
-    ]
+    return [<ReviewHeader cafeName={cafeName} cafeArea={cafeArea} />]
   }
 
   const generateImage = (
