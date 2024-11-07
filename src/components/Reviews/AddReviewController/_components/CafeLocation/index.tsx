@@ -86,66 +86,70 @@ const CafeLocation = ({}: CafeLocationProps) => {
   }
 
   const onPlaceChanged = (place: google.maps.places.PlaceResult) => {
-    const placeData: Partial<Cafe> = {}
-    placeData.name = place.name
+    try {
+      const placeData: Partial<Cafe> = {}
+      placeData.name = place.name
 
-    if (!place.geometry?.location) {
-      message.error('Place not found').then()
-      return
-    }
-
-    placeData.location = {
-      lat: place.geometry.location.lat(),
-      lon: place.geometry.location.lng()
-    }
-    placeData.details = place.formatted_address
-
-    // Get each component of the address from the place details,
-    // and then fill-in the corresponding field on the form.
-    if (!place.address_components) {
-      return
-    }
-
-    for (let i = 0; i < place.address_components.length; i++) {
-      let addressType = place.address_components[i]
-        .types[0] as keyof typeof COMPONENT_FORM
-
-      if (COMPONENT_FORM[addressType]) {
-        // eslint-disable-next-line prefer-const
-        let val =
-          place.address_components[i][
-            COMPONENT_FORM[
-              addressType
-            ] as keyof google.maps.GeocoderAddressComponent
-          ]
-        if (addressType === 'locality') {
-          addressType = 'sublocality_level_2'
-        } else if (addressType === 'administrative_area_level_2') {
-          addressType = 'sublocality_level_1'
-        }
-
-        if (typeof val != 'string') return
-
-        val = val.replace('อำเภอ', '')
-        val = val.replace('อ.', '')
-        val = val.replace('เขต', '')
-        val = val.replace('แขวง', '')
-        val = val.replace('ตำบล', '')
-        val = val.replace('จังหวัด', '')
-        val = val.replace('จ.', '')
-        val = val.trim()
-
-        placeData[addressType] = val
+      if (!place.geometry?.location) {
+        message.error('Place not found').then()
+        return
       }
+
+      placeData.location = {
+        lat: place.geometry.location.lat(),
+        lon: place.geometry.location.lng()
+      }
+      placeData.details = place.formatted_address
+
+      // Get each component of the address from the place details,
+      // and then fill-in the corresponding field on the form.
+      if (!place.address_components) {
+        return
+      }
+
+      for (let i = 0; i < place.address_components.length; i++) {
+        let addressType = place.address_components[i]
+          .types[0] as keyof typeof COMPONENT_FORM
+
+        if (COMPONENT_FORM[addressType]) {
+          // eslint-disable-next-line prefer-const
+          let val =
+            place.address_components[i][
+              COMPONENT_FORM[
+                addressType
+              ] as keyof google.maps.GeocoderAddressComponent
+            ]
+          if (addressType === 'locality') {
+            addressType = 'sublocality_level_2'
+          } else if (addressType === 'administrative_area_level_2') {
+            addressType = 'sublocality_level_1'
+          }
+
+          if (typeof val != 'string') return
+
+          val = val.replace('อำเภอ', '')
+          val = val.replace('อ.', '')
+          val = val.replace('เขต', '')
+          val = val.replace('แขวง', '')
+          val = val.replace('ตำบล', '')
+          val = val.replace('จังหวัด', '')
+          val = val.replace('จ.', '')
+          val = val.trim()
+
+          placeData[addressType] = val
+        }
+      }
+
+      mapRef.current?.panTo(place.geometry.location)
+      if (marker.current) marker.current.position = place.geometry.location
+
+      setPlaceData(placeData)
+
+      mapRef.current?.panTo(place.geometry.location)
+      mapRef.current?.setZoom(20)
+    } catch (error) {
+      console.log(error)
     }
-
-    mapRef.current?.panTo(place.geometry.location)
-    if (marker.current) marker.current.position = place.geometry.location
-
-    setPlaceData(placeData)
-
-    mapRef.current?.panTo(place.geometry.location)
-    mapRef.current?.setZoom(20)
   }
 
   const titleProps: TitleProps = {

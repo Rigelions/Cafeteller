@@ -6,6 +6,11 @@ export interface Banner {
   date: string
   name: string
   url: string
+  alternative?: {
+    '@1980': string
+    '@1024': string
+    '@720': string
+  }
 }
 
 export interface Location {

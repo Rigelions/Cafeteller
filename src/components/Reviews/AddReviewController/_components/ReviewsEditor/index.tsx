@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Col, message } from 'antd'
 import { uploadImageService } from '@/services/media/images'
 import { TAGS } from '@/components/Reviews/AddReviewController/constants'
@@ -27,6 +27,7 @@ import useLoadingOverlay from '@/hooks/useLoadingOverlay'
 import { reviewAtom } from '@/components/Reviews/AddReviewController/atom/review'
 import ReviewHeader from '@/components/ui/ReviewHeader'
 import Show from '@/components/ui/Show'
+import BannerUpload from '@/components/Reviews/AddReviewController/_components/BannerUpload'
 
 const ReviewsEditor = () => {
   const [cafe] = useAtom(cafeAtom)
@@ -125,9 +126,15 @@ const ReviewsEditor = () => {
     }
   }, [review, editorRef.current])
 
+  const uploadCallback = useCallback(async (file: File) => {
+    return await uploadImageService(file)
+  }, [])
+
   return (
     <>
       <Col className='pl-20 py-5' span={15}>
+        <BannerUpload />
+
         <Show when={!!cafe.name || !!cafe.sublocality_level_1}>
           <ReviewHeader
             cafeName={cafe.name || ''}
@@ -136,12 +143,7 @@ const ReviewsEditor = () => {
           />
         </Show>
 
-        <Editor
-          saveRef={editorRef}
-          uploadCallback={async (file: File) => {
-            return await uploadImageService(file)
-          }}
-        />
+        <Editor saveRef={editorRef} uploadCallback={uploadCallback} />
       </Col>
 
       <Col className='pr-8 py-5' span={9}>

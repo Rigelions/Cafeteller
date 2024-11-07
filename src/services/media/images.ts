@@ -1,12 +1,14 @@
 import { UploadResponse } from '@/types'
 import { uploadImageRepo } from '@/repositories/media/images'
+import { AxiosProgressEvent } from 'axios'
 
 export const uploadImageService = async (
-  file: File
+  file: File,
+  onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
 ): Promise<UploadResponse> => {
   // sent file using axios
   try {
-    const response = await uploadImageRepo(file)
+    const response = await uploadImageRepo(file, onUploadProgress)
     return response.data
   } catch (error) {
     console.error('Error uploading image:', error)

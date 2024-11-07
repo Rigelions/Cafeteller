@@ -46,7 +46,7 @@ const CarouselBanner = () => {
                   transform: 'rotate(-15deg)'
                 }}
               >
-                {item.tags.includes('Recommended') && (
+                {item.tags?.includes('Recommended') && (
                   <>
                     Recommended
                     <br />
