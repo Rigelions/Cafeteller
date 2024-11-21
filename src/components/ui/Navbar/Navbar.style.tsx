@@ -98,7 +98,7 @@ export const ReviewBarText = styled.div`
   }
 `
 
-export const HoverableScroll = styled.div<{ bgColor: string }>`
+export const HoverableScroll = styled.div<{ bgColor?: string }>`
   /* background-color: #dfceaf; */
   transition-timing-function: cubic-bezier(0.18, 0.89, 0.29, 0.96);
   transition-duration: 0.3s;

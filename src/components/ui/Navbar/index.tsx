@@ -235,7 +235,7 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
         className='review-hover border-left'
       >
         <Link href={'/'}>
-          <HoverableScroll style={{ height: '100%' }} bgColor={navBgColor[0]}>
+          <HoverableScroll style={{ height: '100%' }} className={`${navBgColor[0]}`}>
             <HoverableInnerScroll>
               <ReviewFace
                 className={classNames([
@@ -259,7 +259,7 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
         className='search-hover border-left'
       >
         <Link href={'/search'}>
-          <HoverableScroll style={{ height: '100%' }} bgColor={navBgColor[1]}>
+          <HoverableScroll style={{ height: '100%' }} className={`${navBgColor[1]}`}>
             <HoverableInnerScroll>
               <Search
                 className={classNames([
