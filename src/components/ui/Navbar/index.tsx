@@ -130,6 +130,10 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
   }
 
   useEffect(() => {
+    CheckPath()
+  }, [])
+
+  useEffect(() => {
     const searchButton = Object.values(
       document.getElementsByClassName('search-hover')
     )
@@ -139,8 +143,6 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
     const logoButton = Object.values(
       document.getElementsByClassName('logo-hover')
     )
-
-    window.addEventListener('load', CheckPath)
 
     searchButton.forEach((element) => {
       element.addEventListener('mouseenter', searchHover)
@@ -169,7 +171,6 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
     }
 
     return () => {
-      window.removeEventListener('load', CheckPath)
       searchButton.forEach((element) => {
         element.removeEventListener('mouseenter', searchHover)
         element.removeEventListener('click', searchClick)
