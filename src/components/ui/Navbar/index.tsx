@@ -130,6 +130,10 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
   }
 
   useEffect(() => {
+    CheckPath()
+  }, [])
+
+  useEffect(() => {
     const searchButton = Object.values(
       document.getElementsByClassName('search-hover')
     )
@@ -139,8 +143,6 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
     const logoButton = Object.values(
       document.getElementsByClassName('logo-hover')
     )
-
-    window.addEventListener('load', CheckPath)
 
     searchButton.forEach((element) => {
       element.addEventListener('mouseenter', searchHover)
@@ -169,7 +171,6 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
     }
 
     return () => {
-      window.removeEventListener('load', CheckPath)
       searchButton.forEach((element) => {
         element.removeEventListener('mouseenter', searchHover)
         element.removeEventListener('click', searchClick)
@@ -234,7 +235,7 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
         className='review-hover border-left'
       >
         <Link href={'/'}>
-          <HoverableScroll style={{ height: '100%' }} bgColor={navBgColor[0]}>
+          <HoverableScroll style={{ height: '100%' }} className={`${navBgColor[0]}`}>
             <HoverableInnerScroll>
               <ReviewFace
                 className={classNames([
@@ -258,7 +259,7 @@ const Navbar: React.FC = ({ container }: NavbarProps) => {
         className='search-hover border-left'
       >
         <Link href={'/search'}>
-          <HoverableScroll style={{ height: '100%' }} bgColor={navBgColor[1]}>
+          <HoverableScroll style={{ height: '100%' }} className={`${navBgColor[1]}`}>
             <HoverableInnerScroll>
               <Search
                 className={classNames([
