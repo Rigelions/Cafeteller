@@ -36,17 +36,10 @@ jobs:
           echo "User-agent: *" > public/robots.txt
           echo "Disallow: /" >> public/robots.txt
 
-
-      - name: Write .env file (main)
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo "${{ secrets.ENV_PROD }}" >> .env
-          echo "NEXT_PUBLIC_GIT_COMMIT=${{ github.sha }}" >> .env
-
-      - name: Write .env file (develop)
+      - name: Write .env file
         if: github.ref == 'refs/heads/develop'
         run: |
-          echo "${{ secrets.ENV_DEV }}" >> .env
+          echo "${{ secrets.ENV_BASE }}" >> .env
           echo "NEXT_PUBLIC_GIT_COMMIT=${{ github.sha }}" >> .env
           
       # Step 3: Build Docker image
@@ -82,19 +75,6 @@ jobs:
         with:
           submodules: "recursive"
 
-
-      - uses: 'google-github-actions/auth@v2'
-        if: github.ref == 'refs/heads/main'
-        with:
-          credentials_json: ${{ secrets.SERVICE_ACCOUNT_PROD }}
-
-      - name: Deploy to App Engine (main)
-        if: github.ref == 'refs/heads/main'
-        uses: google-github-actions/deploy-appengine@v2
-        with:
-          deliverables: app.yaml
-          project_id: cafeteller-f18b8
-
       - uses: 'google-github-actions/auth@v2'
         if: github.ref == 'refs/heads/develop'
         with:
@@ -108,8 +88,16 @@ jobs:
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}  # Store private SSH key in GitHub Secrets
           port: 22
           script: |
+            # Dynamically create the .env file with the secrets
+            echo "${{ secrets.ENV_DEV }}" >> .env
+            
+            # Log in to Amazon ECR
             aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com
             docker pull 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com/cafeteller/app:latest
+            
+            # Stop and remove any existing containers
             docker stop app || true
             docker rm app || true
-            docker run -d -p 80:3000 --name app 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com/cafeteller/app:latest
+            
+            # Run the new container
+            docker run -d -p 80:3000 --name app --env-file .env 207567761428.dkr.ecr.ap-southeast-2.amazonaws.com/cafeteller/app:latest
