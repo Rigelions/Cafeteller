@@ -16,6 +16,7 @@ import { Filter } from '@/components/Search/types'
 import { getCafeService } from '@/components/Search/services'
 import useDebounce from '@/hooks/useDebounce'
 import useFloatingSpinner from '@/hooks/useFloatingSpinner'
+import { Maitree } from 'next/font/google';
 
 const ControlFooter = dynamic(
   () => import('./components/ControlFooter').then((module) => module),
@@ -25,6 +26,11 @@ const Card = dynamic(
   () => import('core_cafeteller/components').then((module) => module.Card),
   { ssr: false }
 )
+
+const maitree = Maitree({
+  subsets: ["latin", "thai"],
+  weight: "400",
+});
 
 const Map = styled.div`
   width: 100%;
@@ -174,6 +180,10 @@ export default function Search() {
                             title={c.name}
                             src={c.banner?.url}
                             className='h-96 lg:h-[28rem]'
+                            titleProps={{
+                              className:
+                                `${maitree.className}`
+                            }}
                           />
                         </Link>
                       </SearchReviewCard>
@@ -209,6 +219,10 @@ export default function Search() {
                         title={c.name}
                         src={c.banner?.url}
                         className='h-96 lg:h-[28rem]'
+                        titleProps={{
+                          className:
+                            `${maitree.className}`
+                        }}
                       />
                     </Link>
                   </Col>

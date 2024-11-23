@@ -28,6 +28,8 @@ import {
 import useGenerateContent from '@/components/Reviews/ReviewsContent/hooks/useGenerateContent'
 import Show from '@/components/ui/Show'
 
+import { Maitree } from 'next/font/google';
+
 const MoreLikeThis = dynamic(() => import('@/components/ui/MoreLikeThis'), {
   ssr: false
 })
@@ -38,6 +40,12 @@ const Desktop = dynamic(() => import('@/components/ui/Show/Desktop'), {
   ssr: false
 })
 const ShareBox = dynamic(() => import('./_components/ShareBox'), { ssr: false })
+
+const maitree = Maitree({
+  subsets: ["latin", "thai"],
+  weight: "400",
+});
+
 // This function gets called at build time
 export async function getServerSideProps(context: { params: { id: any } }) {
   // Call an external API endpoint to get posts
@@ -302,7 +310,7 @@ const Content = styled.div`
     font-size: 16px;
     margin: 0;
     word-break: break-word;
-    font-family: 'Maitree', serif;
+    font-family: ${maitree.style.fontFamily};
     padding: 5%;
   }
   .content-wrap {
@@ -326,7 +334,7 @@ const Content = styled.div`
     padding-bottom: 0;
     padding-top: 10px;
     text-align: center;
-    font-family: 'Georgia';
+    font-family: ${maitree.style.fontFamily};
     color: #1e315c;
   }
   .divide-image {

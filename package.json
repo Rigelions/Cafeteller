@@ -13,6 +13,7 @@
   "dependencies": {
     "@ant-design/cssinjs": "1.21.0",
     "@googlemaps/js-api-loader": "^1.16.8",
+    "@next/font": "^14.2.15",
     "antd": "^5.20.0",
     "axios": "1.7.4",
     "firebase": "11.0.1",
