@@ -9,6 +9,7 @@ import dynamic from 'next/dynamic'
 import useSimilarCafe from '@/hooks/useSimilarCafe'
 import useViewport from '@/hooks/useViewport'
 import { breakpoints } from '@/utils/breakpoints'
+import { maitree } from '@/utils/font'
 
 const Card = dynamic(
   () => import('core_cafeteller/components').then((module) => module.Card),
@@ -50,12 +51,10 @@ const MoreLikeThis = ({ tags, id }: MoreLikeThisProps) => {
                       className='h-60 md:h-80 lg:h-[23rem]'
                       key={review.id}
                       titleProps={{
-                        className:
-                          'text-[1rem] my-0 leading-5 md:leading-6 lg:leading-8 md:my-2 md:text-xl lg:text-[1.4rem] georgia-font'
+                        className: `text-[1rem] my-0 leading-5 md:leading-6 lg:leading-8 md:my-2 md:text-xl lg:text-[1.4rem] ${maitree.className}`
                       }}
                       descriptionProps={{
-                        className:
-                          'text-2xl my-0 lg:my-4 lg:text-[1.8rem] worksans-font'
+                        className: `text-2xl my-0 lg:my-4 lg:text-[1.8rem] ${maitree.className}`
                       }}
                       src={(review as Review).cafe.banner.url}
                       title={(review as Review).cafe.name}

@@ -10,6 +10,7 @@ import { Underline } from '@/components/Home/_components/AllReview/AllReview.sty
 import useReviewsList from '@/components/Home/hooks/useReviewsList'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { maitree } from '@/utils/font'
 
 const Card = dynamic(
   () => import('core_cafeteller/components').then((module) => module.Card),
@@ -47,6 +48,12 @@ const RecentReview = () => {
                   title={r.cafe.name}
                   src={r.cafe.banner?.url}
                   className='h-96 lg:h-[28rem]'
+                  titleProps={{
+                    className: `${maitree.className}`
+                  }}
+                  descriptionProps={{
+                    className: `${maitree.className}`
+                  }}
                 />
               </Link>
             )

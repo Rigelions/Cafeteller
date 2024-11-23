@@ -5,6 +5,7 @@ import { DisplayReviewRow, Review } from '@/types'
 import { useRouter } from 'next/router'
 import useReviewRowHeight from '@/components/Home/hooks/useReviewRowHeight'
 import Link from 'next/link'
+import { maitree } from '@/utils/font'
 
 const CoffeeLoader = dynamic(
   () =>
@@ -165,12 +166,11 @@ const Layout = ({ header, footer, outerRef }: LayoutProps) => {
                       className='h-60 md:h-80 lg:h-[23rem]'
                       key={review.id}
                       titleProps={{
-                        className:
-                          'text-[1rem] my-0 leading-5 md:leading-6 lg:leading-8 md:my-2 md:text-xl lg:text-[1.4rem] georgia-font'
+                        className: `text-[1rem] my-0 leading-5 md:leading-6 lg:leading-8 md:my-2 md:text-xl lg:text-[1.4rem] ${maitree.className}`
                       }}
                       descriptionProps={{
                         className:
-                          'text-2xl my-0 lg:my-4 lg:text-[1.8rem] worksans-font'
+                          `text-2xl my-0 lg:my-4 lg:text-[1.8rem] ${maitree.className}`
                       }}
                       src={(review as Review).cafe.banner?.url}
                       title={titleCutOff}

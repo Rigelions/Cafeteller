@@ -16,6 +16,7 @@ import { Filter } from '@/components/Search/types'
 import { getCafeService } from '@/components/Search/services'
 import useDebounce from '@/hooks/useDebounce'
 import useFloatingSpinner from '@/hooks/useFloatingSpinner'
+import { maitree } from '@/utils/font'
 
 const ControlFooter = dynamic(
   () => import('./components/ControlFooter').then((module) => module),
@@ -174,6 +175,12 @@ export default function Search() {
                             title={c.name}
                             src={c.banner?.url}
                             className='h-96 lg:h-[28rem]'
+                            titleProps={{
+                              className: `${maitree.className}`
+                            }}
+                            descriptionProps={{
+                              className: `${maitree.className}`
+                            }}
                           />
                         </Link>
                       </SearchReviewCard>
@@ -209,6 +216,12 @@ export default function Search() {
                         title={c.name}
                         src={c.banner?.url}
                         className='h-96 lg:h-[28rem]'
+                        titleProps={{
+                          className: `${maitree.className}`
+                        }}
+                        descriptionProps={{
+                          className: `${maitree.className}`
+                        }}
                       />
                     </Link>
                   </Col>
