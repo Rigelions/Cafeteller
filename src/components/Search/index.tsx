@@ -178,6 +178,9 @@ export default function Search() {
                             titleProps={{
                               className: `${maitree.className}`
                             }}
+                            descriptionProps={{
+                              className: `${maitree.className}`
+                            }}
                           />
                         </Link>
                       </SearchReviewCard>
@@ -214,6 +217,9 @@ export default function Search() {
                         src={c.banner?.url}
                         className='h-96 lg:h-[28rem]'
                         titleProps={{
+                          className: `${maitree.className}`
+                        }}
+                        descriptionProps={{
                           className: `${maitree.className}`
                         }}
                       />

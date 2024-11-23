@@ -170,7 +170,7 @@ const Layout = ({ header, footer, outerRef }: LayoutProps) => {
                       }}
                       descriptionProps={{
                         className:
-                          'text-2xl my-0 lg:my-4 lg:text-[1.8rem] worksans-font'
+                          `text-2xl my-0 lg:my-4 lg:text-[1.8rem] ${maitree.className}`
                       }}
                       src={(review as Review).cafe.banner?.url}
                       title={titleCutOff}

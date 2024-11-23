@@ -51,6 +51,9 @@ const RecentReview = () => {
                   titleProps={{
                     className: `${maitree.className}`
                   }}
+                  descriptionProps={{
+                    className: `${maitree.className}`
+                  }}
                 />
               </Link>
             )
