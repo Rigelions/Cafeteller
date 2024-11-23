@@ -29,6 +29,7 @@ import useGenerateContent from '@/components/Reviews/ReviewsContent/hooks/useGen
 import Show from '@/components/ui/Show'
 
 import { maitree } from '@/utils/font'
+import withMeta from '@/hoc/withMeta'
 
 const MoreLikeThis = dynamic(() => import('@/components/ui/MoreLikeThis'), {
   ssr: false
@@ -72,7 +73,7 @@ interface ReviewDetailProps {
   reviews: Record<string, Review>
 }
 
-export default function ReviewContent({ reviews }: ReviewDetailProps) {
+function ReviewContent({ reviews }: ReviewDetailProps) {
   const router = useRouter()
 
   const { id: _id } = router.query
@@ -85,44 +86,8 @@ export default function ReviewContent({ reviews }: ReviewDetailProps) {
 
   const { isAdmin } = useProfile()
 
-  const banner = reviews?.[id].cafe.banner || {}
-
   return (
     <>
-      <Head>
-        <title>Cafeteller || {reviews[id].cafe.name}</title>
-        <link rel='icon' href='/favicon.ico' />
-        <meta
-          name='description'
-          content={
-            reviews[id].cafe.description ||
-            'Because good cafés deserve a shout out'
-          }
-        />
-        <meta name='robots' content='all' />
-        <meta
-          name='viewport'
-          content='width=device-width, initial-scale=1.0'
-        ></meta>
-        <meta charSet='UTF-8'></meta>
-
-        <meta
-          property='og:title'
-          content={`Cafeteller || ${reviews[id].cafe.name}`}
-        />
-        <meta
-          property='og:description'
-          content={
-            reviews[id].cafe.description ||
-            'Because good cafés deserve a shout out'
-          }
-        />
-        <meta
-          property='og:image'
-          content={banner.url || '/assets/Images/COVER1.jpg'}
-        />
-      </Head>
-
       <Container>
         <Row align='middle' justify='center'>
           <Col xs={24} xxl={18}>
@@ -255,6 +220,32 @@ export default function ReviewContent({ reviews }: ReviewDetailProps) {
     </>
   )
 }
+
+export default withMeta(ReviewContent, ({ reviews }) => {
+  const id = Object.keys(reviews)[0]
+
+  // Extract metadata details
+  const cafeName = reviews[id].cafe.name
+  const cafeDescription =
+    reviews[id].cafe.description || 'Because good cafés deserve a shout out'
+  const cafeTags = reviews[id].cafe.tags
+  const bannerImage =
+    reviews[id].cafe.banner?.url || '/assets/Images/COVER1.jpg'
+
+  // Return meta information
+  return {
+    title: `Cafeteller || ${cafeName}`,
+    description: cafeDescription,
+    keywords: cafeTags,
+    metaTags: [
+      { name: 'robots', content: 'all' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+      { property: 'og:title', content: `Cafeteller || ${cafeName}` },
+      { property: 'og:description', content: cafeDescription },
+      { property: 'og:image', content: bannerImage }
+    ]
+  }
+})
 
 const Container = styled.div``
 

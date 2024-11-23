@@ -5,29 +5,46 @@ interface MetaData {
   title?: string
   description?: string
   keywords?: string[]
-  [key: string]: any // For any other meta tags
+  metaTags?: Array<{ name?: string; property?: string; content: string }>
+  linkTags?: Array<{ rel: string; href: string }>
+  [key: string]: any // For any additional meta properties
 }
+
+type MetaDataFunction<P> = (props: P) => MetaData
 
 const withMeta = <P extends object>(
   WrappedComponent: ComponentType<P>,
-  metaData: MetaData
+  metaData: MetaData | MetaDataFunction<P>
 ) => {
   const HOC: React.FC<P> = (props) => {
+    const meta = typeof metaData === 'function' ? metaData(props) : metaData
+
     return (
       <>
         <Head>
-          {metaData.title && <title>{metaData.title}</title>}
-          {metaData.description && (
-            <meta name='description' content={metaData.description} />
+          {meta.title && <title>{meta.title}</title>}
+          {meta.description && (
+            <meta name='description' content={meta.description} />
           )}
-          {metaData.keywords && (
-            <meta name='keywords' content={metaData.keywords.join(', ')} />
+          {meta.keywords && (
+            <meta name='keywords' content={meta.keywords.join(', ')} />
           )}
-          {Object.keys(metaData).map((key) => {
-            if (!['title', 'description', 'keywords'].includes(key)) {
-              return <meta key={key} name={key} content={metaData[key]} />
-            }
-          })}
+          {meta.metaTags?.map((tag, index) =>
+            tag.name ? (
+              <meta key={index} name={tag.name} content={tag.content} />
+            ) : (
+              tag.property && (
+                <meta
+                  key={index}
+                  property={tag.property}
+                  content={tag.content}
+                />
+              )
+            )
+          )}
+          {meta.linkTags?.map((link, index) => (
+            <link key={index} rel={link.rel} href={link.href} />
+          ))}
         </Head>
         <WrappedComponent {...props} />
       </>
