@@ -17,6 +17,7 @@ import { getCafeService } from '@/components/Search/services'
 import useDebounce from '@/hooks/useDebounce'
 import useFloatingSpinner from '@/hooks/useFloatingSpinner'
 import { maitree } from '@/utils/font'
+import withMeta from '@/hoc/withMeta'
 
 const ControlFooter = dynamic(
   () => import('./components/ControlFooter').then((module) => module),
@@ -101,7 +102,7 @@ const SearchReviewCard = styled.div`
   width: 95%;
 `
 
-export default function Search() {
+function Search() {
   const [filteredCafe, setFilteredCafe] = useState<Cafe[]>([])
   const mapElRef = useRef<HTMLElement | null>(null)
 
@@ -234,3 +235,13 @@ export default function Search() {
     </>
   )
 }
+
+export default withMeta(Search, {
+  title: 'Search',
+  description: 'Because good cafés deserve a shout out',
+  keywords: ['search', 'page', 'cafeteller'],
+  'og:title': 'Search',
+  'og:description': 'Because good cafés deserve a shout out',
+  'og:type': 'website',
+  'og:image': '/assets/Images/COVER1.jpg'
+})
