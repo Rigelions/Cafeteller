@@ -240,8 +240,11 @@ export default withMeta(Search, {
   title: 'Search',
   description: 'Because good cafés deserve a shout out',
   keywords: ['search', 'page', 'cafeteller'],
-  'og:title': 'Search',
-  'og:description': 'Because good cafés deserve a shout out',
-  'og:type': 'website',
-  'og:image': '/assets/Images/COVER1.jpg'
+  metaTags: [
+    { name: 'robots', content: 'all' },
+    { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+    { property: 'og:title', content: 'Search'},
+    { property: 'og:description', content: 'Because good cafés deserve a shout out' },
+    { property: 'og:image', content: '/assets/Images/COVER1.jpg' }
+  ]
 })
