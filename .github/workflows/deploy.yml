@@ -30,6 +30,12 @@ jobs:
           echo "$SERVICE_ACCOUNT_JSON" >> server/serviceAccountKey.json
           echo "$SERVICE_ACCOUNT_JSON_DEV" >> server/serviceAccountKey-Dev.json
 
+      - name: Allow All Bots (develop)
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          echo "User-agent: *" > public/robots.txt
+          echo "Allow: /" >> public/robots.txt
+
       - name: Write .env file
         if: github.ref == 'refs/heads/develop'
         run: |
