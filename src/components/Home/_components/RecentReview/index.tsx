@@ -49,8 +49,7 @@ const RecentReview = () => {
                   src={r.cafe.banner?.url}
                   className='h-96 lg:h-[28rem]'
                   titleProps={{
-                    className:
-                      `${maitree.className}`
+                    className: `${maitree.className}`
                   }}
                 />
               </Link>

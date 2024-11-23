@@ -176,8 +176,7 @@ export default function Search() {
                             src={c.banner?.url}
                             className='h-96 lg:h-[28rem]'
                             titleProps={{
-                              className:
-                                `${maitree.className}`
+                              className: `${maitree.className}`
                             }}
                           />
                         </Link>
@@ -215,8 +214,7 @@ export default function Search() {
                         src={c.banner?.url}
                         className='h-96 lg:h-[28rem]'
                         titleProps={{
-                          className:
-                            `${maitree.className}`
+                          className: `${maitree.className}`
                         }}
                       />
                     </Link>

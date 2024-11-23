@@ -51,8 +51,7 @@ const MoreLikeThis = ({ tags, id }: MoreLikeThisProps) => {
                       className='h-60 md:h-80 lg:h-[23rem]'
                       key={review.id}
                       titleProps={{
-                        className:
-                          `text-[1rem] my-0 leading-5 md:leading-6 lg:leading-8 md:my-2 md:text-xl lg:text-[1.4rem] ${maitree.className}`
+                        className: `text-[1rem] my-0 leading-5 md:leading-6 lg:leading-8 md:my-2 md:text-xl lg:text-[1.4rem] ${maitree.className}`
                       }}
                       descriptionProps={{
                         className:
