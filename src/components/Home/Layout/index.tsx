@@ -5,7 +5,7 @@ import { DisplayReviewRow, Review } from '@/types'
 import { useRouter } from 'next/router'
 import useReviewRowHeight from '@/components/Home/hooks/useReviewRowHeight'
 import Link from 'next/link'
-import { Maitree } from 'next/font/google';
+import { maitree } from '@/utils/font'
 
 const CoffeeLoader = dynamic(
   () =>
@@ -28,11 +28,6 @@ const AddCard = dynamic(
 )
 
 const OVERSCAN = 8
-
-const maitree = Maitree({
-  subsets: ["latin", "thai"],
-  weight: "400",
-});
 
 interface LayoutProps {
   header?: React.ReactNode

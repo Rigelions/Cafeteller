@@ -28,7 +28,7 @@ import {
 import useGenerateContent from '@/components/Reviews/ReviewsContent/hooks/useGenerateContent'
 import Show from '@/components/ui/Show'
 
-import { Maitree } from 'next/font/google';
+import { maitree } from '@/utils/font'
 
 const MoreLikeThis = dynamic(() => import('@/components/ui/MoreLikeThis'), {
   ssr: false
@@ -40,11 +40,6 @@ const Desktop = dynamic(() => import('@/components/ui/Show/Desktop'), {
   ssr: false
 })
 const ShareBox = dynamic(() => import('./_components/ShareBox'), { ssr: false })
-
-const maitree = Maitree({
-  subsets: ["latin", "thai"],
-  weight: "400",
-});
 
 // This function gets called at build time
 export async function getServerSideProps(context: { params: { id: any } }) {

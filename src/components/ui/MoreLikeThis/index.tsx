@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic'
 import useSimilarCafe from '@/hooks/useSimilarCafe'
 import useViewport from '@/hooks/useViewport'
 import { breakpoints } from '@/utils/breakpoints'
-import { Maitree } from 'next/font/google';
+import { maitree } from '@/utils/font'
 
 const Card = dynamic(
   () => import('core_cafeteller/components').then((module) => module.Card),
@@ -17,11 +17,6 @@ const Card = dynamic(
     ssr: false
   }
 )
-
-const maitree = Maitree({
-  subsets: ["latin", "thai"],
-  weight: "400",
-});
 
 interface MoreLikeThisProps {
   tags: string[]

@@ -423,11 +423,6 @@ a:hover {
     font-family: 'Worksans', 'Thaisans', cursive;
 }
 
-/* not support thai lang */
-.maitree-font {
-    font-family: var(--font-maitree);
-}
-
 .map-search .gm-style-iw-chr {
     display: none;
 }

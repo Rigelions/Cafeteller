@@ -10,17 +10,12 @@ import { Underline } from '@/components/Home/_components/AllReview/AllReview.sty
 import useReviewsList from '@/components/Home/hooks/useReviewsList'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { Maitree } from 'next/font/google';
+import { maitree } from '@/utils/font'
 
 const Card = dynamic(
   () => import('core_cafeteller/components').then((module) => module.Card),
   { ssr: false }
 )
-
-const maitree = Maitree({
-  subsets: ["latin", "thai"],
-  weight: "400",
-});
 
 const RecentReview = () => {
   const { data } = useReviewsList('getRecentReviews')
