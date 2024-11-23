@@ -169,8 +169,7 @@ const Layout = ({ header, footer, outerRef }: LayoutProps) => {
                         className: `text-[1rem] my-0 leading-5 md:leading-6 lg:leading-8 md:my-2 md:text-xl lg:text-[1.4rem] ${maitree.className}`
                       }}
                       descriptionProps={{
-                        className:
-                          `text-2xl my-0 lg:my-4 lg:text-[1.8rem] ${maitree.className}`
+                        className: `${maitree.className}`
                       }}
                       src={(review as Review).cafe.banner?.url}
                       title={titleCutOff}
