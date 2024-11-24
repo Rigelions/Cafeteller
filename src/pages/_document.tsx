@@ -43,6 +43,7 @@ export default class MyDocument extends Document {
             property='fb:app_id'
             content={process.env.NEXT_PUBLIC_FB_APP_ID}
           />
+          <link rel='icon' href='/assets/favicon.ico' />
         </Head>
         <body>
           <Main />

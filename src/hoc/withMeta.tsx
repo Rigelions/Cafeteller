@@ -1,12 +1,18 @@
 import React, { ComponentType } from 'react'
 import Head from 'next/head'
 
+interface LinkTag {
+  rel: string
+  href: string
+  type?: string
+}
+
 interface MetaData {
   title?: string
   description?: string
   keywords?: string[]
   metaTags?: Array<{ name?: string; property?: string; content: string }>
-  linkTags?: Array<{ rel: string; href: string }>
+  linkTags?: Array<LinkTag>
   [key: string]: any // For any additional meta properties
 }
 
@@ -43,7 +49,12 @@ const withMeta = <P extends object>(
             )
           )}
           {meta.linkTags?.map((link, index) => (
-            <link key={index} rel={link.rel} href={link.href} />
+            <link
+              key={index}
+              type={link.type}
+              rel={link.rel}
+              href={link.href}
+            />
           ))}
         </Head>
         <WrappedComponent {...props} />

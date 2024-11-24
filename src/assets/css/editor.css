@@ -1,3 +1,11 @@
+.codex-editor * {
+    font-family: var(--maitree), sans-serif;
+}
+
+.ce-paragraph {
+    font-size: 20px;
+}
+
 .cx-video {
     max-width: 600px;
 }

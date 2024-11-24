@@ -3,7 +3,8 @@ import { SWRProvider } from '@/components/SWRProvider'
 import StyledComponentsRegistry from '@/lib/StyleComponentRegistry'
 import { initialFirebaseApp } from '@/utils/firebase'
 
-import '../public/globals.css'
+import '@/assets/css/globals.css'
+import '@/assets/css/editor.css'
 
 import Footer from '@/components/ui/Footer'
 import NavbarContainer from '@/components/ui/NavbarContainer'

@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import ReviewsEditor from '@/components/Reviews/AddReviewController/_components/ReviewsEditor'
-import Head from 'next/head'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import useFetchReview from '@/components/Reviews/AddReviewController/hooks/useFetchReview'
+import withMeta from '@/hoc/withMeta'
+import { maitree } from '@/utils/font'
 
-let { Row, Typography, Col, Steps } = require('antd')
+let { Row, Typography, Col } = require('antd')
 const { Title } = Typography
 
 Row = styled(Row)`
@@ -17,17 +18,13 @@ const Wrapper = styled.div`
   margin: 10px 0;
 `
 
-export default function Add() {
+function Add() {
   useFetchReview()
 
   return (
     <>
-      <Head>
-        <link rel='stylesheet' href='/assets/css/editor.css' />
-      </Head>
-
       <ProtectedRoute>
-        <Wrapper>
+        <Wrapper className={maitree.variable}>
           <Row justify='center' align='top'>
             <Col xs={24} md={22}>
               <Title level={3}>Add Review</Title>
@@ -40,3 +37,9 @@ export default function Add() {
     </>
   )
 }
+
+export default withMeta(Add, {
+  title: 'Add Review',
+  description: 'Add Review',
+  keywords: ['Add Review']
+})
