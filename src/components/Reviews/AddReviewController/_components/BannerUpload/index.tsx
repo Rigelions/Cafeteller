@@ -34,11 +34,28 @@ const BannerUpload: React.FC<BannerUploadProps> = () => {
     }
   }
 
+  const handleOnClear = () => {
+    setCafe((cafe) => ({
+      ...cafe,
+      banner: {
+        date: '',
+        name: '',
+        url: '',
+        alternative: {
+          '@1980': '',
+          '@1024': '',
+          '@720': ''
+        }
+      }
+    }))
+  }
+
   return (
     <div className='banner-upload w-[98%] relative'>
       <FileDrop
         type='image'
         loading={loading}
+        onClear={handleOnClear}
         onFileChange={handleImageChange}
         innerDivClassName='aspect-[4/3]'
         preview={cafe.banner?.url}
