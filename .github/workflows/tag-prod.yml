@@ -1,5 +1,5 @@
 name: Copy Image to Google Artifact Registry
-'on':
+on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+' # Trigger only on tags like v0.1.0
@@ -8,7 +8,7 @@ env:
   PROJECT_ID: ${{ secrets.PROD_PROJECT_ID }}
   REGION: ${{ secrets.GAR_REGION }}
   WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-  IMAGE_NAME: cafeteller/app
+  IMAGE_NAME: 'cafeteller/app'
 
 
 jobs:
