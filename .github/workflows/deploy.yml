@@ -1,9 +1,11 @@
 name: Deploy to App Engine on merge
-'on':
+on:
   push:
     branches:
       - main
       - develop
+    paths-ignore:
+      - .github/**
 
 jobs:
   build:
