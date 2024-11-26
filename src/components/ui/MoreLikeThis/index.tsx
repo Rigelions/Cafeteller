@@ -45,22 +45,23 @@ const MoreLikeThis = ({ tags, id }: MoreLikeThisProps) => {
           similarCafe?.slice(0, moreLikeThisAmount).map((review, index) => (
             <Col key={review.id + '-link'} xs={12} md={8}>
               <MoreReviewCard>
-                <Link href={`/reviews/${review.id}`}>
-                  <a className='flex-center card-shadow'>
-                    <Card
-                      className='h-60 md:h-80 lg:h-[23rem]'
-                      key={review.id}
-                      titleProps={{
-                        className: `text-[1rem] my-0 leading-5 md:leading-6 lg:leading-8 md:my-2 md:text-xl lg:text-[1.4rem] ${maitree.className}`
-                      }}
-                      descriptionProps={{
-                        className: `${maitree.className}`
-                      }}
-                      src={(review as Review).cafe.banner.url}
-                      title={(review as Review).cafe.name}
-                      description={(review as Review).cafe.sublocality_level_1}
-                    />
-                  </a>
+                <Link
+                  href={`/reviews/${review.id}`}
+                  className='flex-center card-shadow'
+                >
+                  <Card
+                    className='h-60 md:h-80 lg:h-[23rem]'
+                    key={review.id}
+                    titleProps={{
+                      className: `text-[1rem] my-0 leading-5 md:leading-6 lg:leading-8 md:my-2 md:text-xl lg:text-[1.4rem] ${maitree.className}`
+                    }}
+                    descriptionProps={{
+                      className: `${maitree.className}`
+                    }}
+                    src={(review as Review).cafe.banner.url}
+                    title={(review as Review).cafe.name}
+                    description={(review as Review).cafe.sublocality_level_1}
+                  />
                 </Link>
               </MoreReviewCard>
             </Col>
