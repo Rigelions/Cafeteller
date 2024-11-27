@@ -230,6 +230,7 @@ export default withMeta(ReviewContent, ({ reviews }) => {
   const cafeTags = reviews[id].cafe.tags
   const bannerImage =
     reviews[id].cafe.banner?.url || '/assets/Images/COVER1.jpg'
+  const pageUrl = `${process.env.NEXT_PUBLIC_REDIRECT_IG_URL}/reviews/${id}`
 
   // Return meta information
   return {
@@ -237,11 +238,22 @@ export default withMeta(ReviewContent, ({ reviews }) => {
     description: cafeDescription,
     keywords: cafeTags,
     metaTags: [
-      { name: 'robots', content: 'all' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+      { name: 'image', content: bannerImage },
       { property: 'og:title', content: `Cafeteller || ${cafeName}` },
       { property: 'og:description', content: cafeDescription },
-      { property: 'og:image', content: bannerImage }
+      { property: 'og:image', content: bannerImage },
+
+      // Additional Open Graph tags
+      { property: 'og:url', content: pageUrl }, // Replace with the page's URL
+      { property: 'og:type', content: 'website' },
+      { property: 'og:site_name', content: 'Cafeteller' },
+
+      // Twitter Card data
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: `Cafeteller || ${cafeName}` },
+      { name: 'twitter:description', content: cafeDescription },
+      { name: 'twitter:image', content: bannerImage },
+      { name: 'twitter:site', content: '@Cafeteller' }
     ]
   }
 })
