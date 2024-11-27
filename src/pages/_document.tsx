@@ -43,6 +43,11 @@ export default class MyDocument extends Document {
             property='fb:app_id'
             content={process.env.NEXT_PUBLIC_FB_APP_ID}
           />
+          {/* viewport */}
+          <meta name='viewport' content='width=device-width, initial-scale=1' />
+          {/* robot */}
+          <meta name='robots' content='index, follow' />
+          {/* favicon */}
           <link rel='icon' href='/assets/favicon.ico' />
         </Head>
         <body>

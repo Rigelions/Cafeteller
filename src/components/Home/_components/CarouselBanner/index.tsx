@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import useSWR from 'swr'
 import { getReviewsBanner } from '@/services/list'
 import Link from 'next/link'
+import { bannerURL } from '@/utils/constants'
 
 const Image = dynamic(
   () => import('core_cafeteller/components').then((module) => module.LazyImage),
@@ -21,7 +22,7 @@ const CarouselBanner = () => {
           className='inner-image'
           placeholderClassName='inner-image'
           style={{ objectFit: 'cover', width: '100%' }}
-          src='/assets/Images/COVER1.jpg'
+          src={bannerURL}
           preview={false}
         />
       </Banner>
