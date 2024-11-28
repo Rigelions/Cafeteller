@@ -206,9 +206,9 @@ export default function ReviewContent({ reviews }: ReviewDetailProps) {
                         key={0}
                         img={'/assets/Images/pattern4.jpg'}
                       />
-                      <Title level={4} className='article-header'>
+                      <p>
                         {reviews[id].cafe.sublocality_level_1}
-                      </Title>
+                      </p>
                       <TitlePattern
                         key={1}
                         img={'/assets/Images/pattern4.jpg'}
@@ -278,7 +278,7 @@ const ForWork = styled.div`
   margin-bottom: 4% !important;
   padding: 5%;
   display: flex;
-  font-family: 'Maitree', serif;
+  font-family: ${maitree.style.fontFamily};
   margin: 0;
   align-items: center;
   font-size: 16px;
@@ -317,7 +317,7 @@ const Content = styled.div`
     margin-bottom: 0 !important;
     text-align: center;
     font-weight: 400;
-    font-family: 'Work Sans', sans-serif;
+    font-family: ${maitree.style.fontFamily};
     font-size: 1.2em;
     white-space: nowrap;
     padding: 5px;
@@ -368,7 +368,7 @@ const Content = styled.div`
     font-size: 12px;
     margin: 5px;
     margin-bottom: 0px;
-    font-family: maitree;
+    font-family: ${maitree.style.fontFamily};;
     font-weight: 400;
     color: black;
   }

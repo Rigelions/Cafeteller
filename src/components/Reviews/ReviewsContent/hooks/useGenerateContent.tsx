@@ -123,7 +123,9 @@ const useGenerateContent = ({
   ): React.ReactNode[] => {
     if (version === 'v2')
       return [
-        <Title level={block.data.level as Level}>{block.data.text}</Title>
+        <Title level={block.data.level as Level} className='article-header'>
+          {block.data.text}
+        </Title>
       ]
 
     const fullCafeName = block.data.text || ''

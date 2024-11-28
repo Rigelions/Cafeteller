@@ -1,5 +1,6 @@
 import React from 'react'
 import { Row, Col, Image } from 'antd'
+import { maitree } from '@/utils/font'
 
 interface CafeData {
   openhour?: string
@@ -61,7 +62,7 @@ const ContactBox: React.FC<ContactBoxProps> = ({ cafeData }) => {
             width={item.width}
           />
         </Col>
-        <Col span={20}>
+        <Col span={20}  className={maitree.className}>
           {item.key === 'landmark'
             ? (cafeData.landmark || '').replace(/&#8232;/g, '')
             : cafeData[item.key as keyof CafeData]}
