@@ -222,9 +222,7 @@ function ReviewContent({ reviews }: ReviewDetailProps) {
 
 export default withMeta(ReviewContent, ({ reviews }) => {
   const id = Object.keys(reviews)[0]
-
-  console.log('reviews', reviews)
-
+  
   // Extract metadata details
   const cafeName = reviews[id].cafe.name
   const cafeDescription =
