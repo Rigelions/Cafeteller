@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 import { Space, Button, Row, Col, Image, Typography } from 'antd'
-import axios from '@/utils/axios'
+import { instance_server } from '@/utils/axios'
 
 import Banner from '@/components/Reviews/components/Banner'
 import { Review } from '@/types'
@@ -46,7 +46,7 @@ export async function getServerSideProps(context: { params: { id: any } }) {
   // Call an external API endpoint to get posts
   const id = context.params.id
   try {
-    const { data } = await axios.get(`/reviews/${id}`)
+    const { data } = await instance_server.get(`/reviews/${id}`)
 
     // By returning { props: { posts } }, the Blog component
     // will receive `posts` as a prop at build time
@@ -222,6 +222,8 @@ function ReviewContent({ reviews }: ReviewDetailProps) {
 
 export default withMeta(ReviewContent, ({ reviews }) => {
   const id = Object.keys(reviews)[0]
+
+  console.log('reviews', reviews)
 
   // Extract metadata details
   const cafeName = reviews[id].cafe.name
