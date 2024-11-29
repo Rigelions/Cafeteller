@@ -6,6 +6,10 @@ const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL
 })
 
+export const instance_server = axios.create({
+  baseURL: process.env.NEXT_PRIVATE_API_URL
+})
+
 // add a request interceptor, firebase id token
 instance.interceptors.request.use(
   async (config) => {
